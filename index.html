@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Orion</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+<script>
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a.nav-link').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent form submission for testing
+  
+      let name = document.getElementById('name');
+      let email = document.getElementById('email');
+      let message = document.getElementById('message');
+      let isValid = true;
+  
+      if (name.value.trim() === "") {
+        alert("Name is required.");
+        name.focus();
+        isValid = false;
+      }
+  
+      if (email.value.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        alert("Please enter a valid email.");
+        email.focus();
+        isValid = false;
+      }
+  
+      if (message.value.trim() === "") {
+        alert("Please enter a message.");
+        message.focus();
+        isValid = false;
+      }
+  
+      if (isValid) {
+        alert("Thank you for your message! We will get back to you shortly.");
+        this.reset(); // Clears the form fields
+      }
+    });
+  
+    // Testimonials Video Modal Popup
+    document.querySelectorAll('.card video').forEach(video => {
+      video.addEventListener('click', function() {
+        // Show video in a modal popup when clicked
+        let modal = document.createElement('div');
+        modal.classList.add('modal', 'fade');
+        modal.id = 'videoModal';
+        modal.tabIndex = '-1';
+        modal.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <video controls autoplay style="width: 100%;">
+                  <source src="${this.querySelector('source').src}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>`;
+        
+        document.body.appendChild(modal);
+        $('#videoModal').modal('show');
+  
+        // Remove modal from DOM after closing
+        $('#videoModal').on('hidden.bs.modal', function () {
+          modal.remove();
+        });
+      });
+    });
+
+    paypal.Buttons({
+    style: {
+      shape: 'rect',
+      color: 'gold',
+      layout: 'vertical',
+      label: 'paypal'
+    },
+    
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '99.99' // Set this to your product price
+          },
+          description: "Product Name"
+        }]
+      });
+    },
+    
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        // Optionally, send transaction details to the server here for fulfillment
+      });
+    },
+    
+    onError: function(err) {
+      console.error(err);
+      alert('An error occurred during the transaction');
+    }
+  }).render('#paypal-button-container'); // Renders the button in the specified container
+
+</script>
+  
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Forex Orion</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#product">Product</a></li>
+        <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero bg-primary text-white text-center">
+    <div class="container">
+      <h1 class="display-4">Welcome to Forex Orion</h1>
+      <p class="lead">Experience the best with our top-quality products</p>
+      <a href="#product" class="btn btn-outline-light btn-lg">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Product Section -->
+  <section id="product" class="product-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-4"><b>Our Product</b></h2>
+      <div class="row">
+        <div class="col-md-6">
+          <img src="./bot.png" class="img-fluid" alt="Product Image">
+        </div>
+        <div class="col-md-6">
+            <h3><b>Fill or Kill 3.0</b></h3>
+          <p><b>Reliable, Real-Time Market Analysis for Smarter Trading Decisions</b><br><br>
+            Our cutting-edge Forex robot is designed to give you a distinct edge in the market by merging advanced 
+            algorithms with comprehensive, real-time data analysis. Equipped with precision and speed, it tirelessly 
+            monitors global financial markets, scanning for profitable opportunities around the clock. Whether it's day or night, 
+            weekday or weekend, our Forex robot never misses a beat, capturing insights and potential trades even while you're away. 
+            Imagine having a powerful tool that reads market signals instantly, providing you with timely, data-driven insights
+             that help you maximize profits and minimize risks. With our Forex robot, you'll always stay ahead of the curve, 
+             making informed trading decisions with confidence. This isn't just automation; it's intelligent, adaptive, 
+             and reliable market analysis, working 24/7 to turn insights into successful trades on your behalf.</p>
+          <h4>$500</h4> <!-- Example product price -->
+          
+          <!-- PayPal Button -->
+          <div id="paypal-button-container"><button type="button" 
+            class="btn btn-outline-primary">
+            <a href="https://wa.me/+27605478465?text=Good%20day%20to%20you.%20I%20want%20to%20inquire%20about%20your%20robot....">
+                Buy Now</a></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials-section bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Customer Testimonials</h2>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <video class="card-img-top" controls>
+              <source src="testimonial1.mp4" type="video/mp4">
+            </video>
+            <div class="card-body">
+              <p class="card-text">Customer's positive feedback.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <video class="card-img-top" controls>
+              <source src="testimonial2.mp4" type="video/mp4">
+            </video>
+            <div class="card-body">
+              <p class="card-text">Customer's positive feedback.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <video class="card-img-top" controls>
+              <source src="testimonial3.mp4" type="video/mp4">
+            </video>
+            <div class="card-body">
+              <p class="card-text">Customer's positive feedback.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Contact Us</h2>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Your Name">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Your Email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea class="form-control" id="message" rows="4" placeholder="Your Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="text-center py-3">
+    <p>&copy; 2024 YourBrand. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
